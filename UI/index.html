@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="STP.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="STP.js"></script>
+    <title>CSS Template</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+  <div class="header">
+        <h2>Save the Pangolin</h2>
+    </div>
+
+    <div class="topnav" id="topNav">
+        <a id="Home_link" href="#home" onclick="changeContent(`Home`)" class="active">Home</a>
+        <a id="Upload_link" href="#upload" onclick="changeContent(`Upload`)">Upload</a>
+        <a id="Contact_link" href="#contact" onclick="changeContent('Home')">Contact</a>
+        <a id="About_link" href="#about" onclick="changeContent('Home')">About</a>
+        <a href="javascript:void(0);" class="icon" onclick="showTopNav()">
+          <i class="fa fa-bars"></i>
+        </a>
+    </div>
+
+    <div class="row">
+    <div class="column side" style="background-color:#aaa;">Column</div>
+    <div class="column middle" style="background-color:#bbb;">
+
+      <div id="Upload_section" style="display: none">
+        <form action="https://jw1448.brighton.domains/save_the_pangolin_api" method="POST">
+          <label for="oid">First name:</label>
+          <input type="text" id="oid" name="oid"><br><br>
+          <label for="name">Last name:</label>
+          <input type="text" id="name" name="name"><br><br>
+          <label for="comment">Last name:</label>
+          <input type="text" id="comment" name="comment"><br><br>
+          <input type="submit" value="Submit">
+        </form>
+      
+        <form action="https://jw1448.brighton.domains/save_the_pangolin_api" method="POST" enctype="multipart/form-data">
+          <input type="file" name="image" />
+          <button type="submit">Upload</button>
+        </form>
+      </div>
+
+      <div id="Home_section">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque pulvinar nulla ut tellus consectetur, eu viverra augue congue. Ut aliquam massa a eros porttitor, sit amet pulvinar leo aliquam. Pellentesque tempus consectetur erat, nec euismod arcu consequat eget. Morbi in diam blandit, pharetra diam eget, dapibus erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc dictum augue ut hendrerit congue. Praesent ultrices, quam vel scelerisque lobortis, magna dui ornare ex, eu sodales dui nunc non mauris. Aliquam nibh sapien, vestibulum vitae turpis ut, vulputate imperdiet erat.<br><br>
+
+           In blandit sapien nulla, at rutrum dui tempor ut. Cras sed tincidunt dolor. Morbi risus urna, pharetra bibendum dolor eu, tempor lobortis erat. Nam rutrum nibh a eleifend egestas. Ut et mollis dui. Phasellus odio ante, vehicula vel nisl a, consectetur condimentum arcu. Pellentesque rhoncus erat nisi, et dignissim velit volutpat egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris a condimentum lectus. Praesent id elementum risus. Ut ac ligula nec dui finibus ultricies. Curabitur imperdiet sed tellus et consequat. Maecenas eleifend sapien vel massa auctor, sit amet iaculis lorem venenatis.<br><br>
+          
+           Nam porttitor, ante vitae porttitor laoreet, urna mi consectetur leo, lacinia aliquam nisl felis feugiat augue. In iaculis mauris sapien, quis feugiat metus tristique vel. Vivamus dapibus diam et pretium convallis. Aliquam aliquam velit eget libero efficitur, eu laoreet tellus dapibus. Morbi vulputate orci a ultrices rhoncus. Aliquam et neque diam. Integer lacinia erat eu lobortis pharetra. Nulla egestas facilisis magna ut maximus. Nunc tincidunt pulvinar lacus, sit amet ullamcorper urna posuere vitae. Integer ornare, ipsum ut ullamcorper dapibus, elit ipsum sodales sapien, vitae ornare dui nulla sit amet metus. Sed hendrerit tincidunt elit tristique consequat. Nulla laoreet bibendum dolor vitae ultrices. Nam vehicula tincidunt tellus eu commodo. Donec sagittis facilisis dictum. Praesent maximus commodo neque vehicula lacinia. Nunc est est, mollis a dolor vel, volutpat auctor dolor.<br><br>
+          
+           In est arcu, pellentesque sit amet fringilla eget, consequat in nisi. Aenean sed leo orci. Aliquam vitae imperdiet arcu. Vivamus diam est, feugiat et augue at, varius sagittis mi. Curabitur ac arcu nec risus laoreet maximus id a nunc. Sed pulvinar mi id pellentesque bibendum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nunc molestie metus eu tortor convallis luctus. Nullam ultrices sapien sed auctor tincidunt.<br><br>
+          
+           Proin at dapibus sem. Sed enim justo, bibendum ac facilisis eu, scelerisque ac augue. Sed semper sapien nisl, vel consectetur lectus tempus quis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas tincidunt eros sit amet sapien tristique, vel mattis ipsum posuere. Integer a sollicitudin lectus. Cras magna felis, cursus ac tristique nec, consectetur ut ex. Maecenas at felis auctor, auctor neque at, mattis urna. Morbi scelerisque est eget molestie elementum. Cras viverra, orci non consequat consectetur, lectus sem viverra purus, at pulvinar ante metus nec nisi. Mauris imperdiet, libero eget porta viverra, massa diam fermentum dolor, in tempor tellus orci quis libero. Nam porta velit in gravida sagittis. Pellentesque consequat urna risus, ut pharetra massa ornare ac. Aenean faucibus tellus leo, at molestie lorem blandit eu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+      </div>
+    </div>
+    <div class="column side" style="background-color:#ccc;">Column</div>
+    </div>
+
+    <div class="footer">
+    <p>Footer</p>
+    </div>
+
+</body>
+</html>
+
+
