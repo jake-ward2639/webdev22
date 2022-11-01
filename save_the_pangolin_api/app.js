@@ -33,17 +33,17 @@ app.delete('/save_the_pangolin_api', async (req, res) => {
 async function getComments(req) {
     let status = 500, data = null;
     try {
-        const oid = req.query.oid;
-        if(oid && oid.length > 0 
-        && oid.length <= 32 && oid.match(/^[a-z0-9]+$/i)){
-            const sql = 'SELECT `name`, `comment` FROM `comments` WHERE `oid`=?';
-            const rows = await db.query(sql, [oid]);
+        const username = req.query.username;
+        if(username && username.length > 0 
+        && username.length <= 32 && username.match(/^[a-z0-9]+$/i)){
+            const sql = 'SELECT `conditionFound`, `notes`, `locationOfSighting`, `imagePath` FROM `sightings` WHERE `username`=?';
+            const rows = await db.query(sql, [username]);
 
             if(rows){
                 status = 200;
                 data = {
-                    'oid': oid,
-                    'comments': rows
+                    'username': username,
+                    'sightings': rows
                 };
             } else {
                 status = 204;
@@ -60,18 +60,18 @@ async function getComments(req) {
 async function postComments(req) {
     let status = 500, data = null;
     try {
-        const oid = req.body.oid;
-        const name = req.body.name;
-        const comment = req.body.comment;
-        if(oid && name && comment
-        && oid.length > 0 && oid.length <= 32
-        && oid.match(/^[a-z0-9]+$/i)
-        && name.length > 0 && name.length <= 64
-        && comment.length > 0 ){
+        const username = req.body.username;
+        const conditionFound = req.body.conditionFound;
+        const notes = req.body.notes;
+        if(username && conditionFound && notes
+        && username.length > 0 && username.length <= 32
+        && username.match(/^[a-z0-9]+$/i)
+        && conditionFound.length > 0 && conditionFound.length <= 64
+        && notes.length > 0 ){
 
-            const sql = 'INSERT INTO `comments` (`oid`, `name`, `comment`) '
+            const sql = 'INSERT INTO `sightings` (`username`, `conditionFound`, `notes`) '
             + 'VALUES (?, ?, ?)';
-            const result = await db.query(sql, [oid, name, comment]);
+            const result = await db.query(sql, [username, conditionFound, notes]);
 
             if(result.affectedRows) {
                 status = 201;
