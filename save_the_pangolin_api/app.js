@@ -63,15 +63,19 @@ async function postComments(req) {
         const username = req.body.username;
         const conditionFound = req.body.conditionFound;
         const notes = req.body.notes;
-        if(username && conditionFound && notes
+        const locationOfSighting = req.body.locationOfSighting;
+        const imagePath = req.body.imagePath;
+        if(username && conditionFound && notes && locationOfSighting && imagePath
         && username.length > 0 && username.length <= 32
         && username.match(/^[a-z0-9]+$/i)
         && conditionFound.length > 0 && conditionFound.length <= 64
-        && notes.length > 0 ){
+        && notes.length > 0 
+        && locationOfSighting.length > 0
+        && imagePath.length > 0 ){
 
-            const sql = 'INSERT INTO `sightings` (`username`, `conditionFound`, `notes`) '
-            + 'VALUES (?, ?, ?)';
-            const result = await db.query(sql, [username, conditionFound, notes]);
+            const sql = 'INSERT INTO `sightings` (`username`, `conditionFound`, `notes`, `locationOfSighting`, `imagePath`) '
+            + 'VALUES (?, ?, ?, ?, ?)';
+            const result = await db.query(sql, [username, conditionFound, notes, locationOfSighting, imagePath]);
 
             if(result.affectedRows) {
                 status = 201;
