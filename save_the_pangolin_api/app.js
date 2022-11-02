@@ -1,4 +1,5 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
 const db = require('./db');
 
@@ -7,14 +8,14 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 const port = 3000;
 app.get('/save_the_pangolin_api', async (req, res) => {
-    const {status, data} = await getComments(req);
+    const {status, data} = await getSighting(req);
     res.status(status);
     if(data) res.json(data);
     else res.end();       
 })
 
 app.post('/save_the_pangolin_api', async (req, res) => {
-    const {status, data} = await postComments(req);
+    const {status, data} = await postSighting(req);
     res.status(status);
     if(data) res.json(data);
     else res.end();
@@ -30,7 +31,7 @@ app.delete('/save_the_pangolin_api', async (req, res) => {
     res.end();
 })
 
-async function getComments(req) {
+async function getSighting(req) {
     let status = 500, data = null;
     try {
         const username = req.query.username;
@@ -57,14 +58,14 @@ async function getComments(req) {
     return {status, data};
 }
 
-async function postComments(req) {
+async function postSighting(req) {
     let status = 500, data = null;
     try {
         const username = req.body.username;
         const conditionFound = req.body.conditionFound;
         const notes = req.body.notes;
         const locationOfSighting = req.body.locationOfSighting;
-        const imagePath = req.body.imagePath;
+        const imagePath = 'theImagePath';
         if(username && conditionFound && notes && locationOfSighting && imagePath
         && username.length > 0 && username.length <= 32
         && username.match(/^[a-z0-9]+$/i)
