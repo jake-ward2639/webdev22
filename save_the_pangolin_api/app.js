@@ -1,10 +1,12 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 const db = require('./db');
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(cors());
 
 const port = 3000;
 app.get('/save_the_pangolin_api', async (req, res) => {
