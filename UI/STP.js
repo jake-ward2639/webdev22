@@ -17,9 +17,26 @@ addEventListener('load', (event) => {
     }
 
     document.querySelector("#submitSighting").addEventListener("click", function(event){
-        fetch('https://jw1448.brighton.domains/save_the_pangolin_api?username=testuser1')
+
+        fetch('https://jw1448.brighton.domains/save_the_pangolin_api', { //fetch post request using form data
+            method: 'POST',
+            headers:{
+            'Content-Type': 'application/x-www-form-urlencoded'
+            },    
+            body: new URLSearchParams({
+                'username': document.querySelector("#username").value,
+                'conditionFound': document.querySelector("#conditionFound").value,
+                'notes': document.querySelector("#notes").value,
+                'locationOfSighting': document.querySelector("#locationOfSighting").value
+            })
+        })
         .then((response) => response.json())
-        .then((data) => console.log(data));
+        .then((data) => { console.log(data) })
+        .catch(console.error);
+
+        /*fetch('https://jw1448.brighton.domains/save_the_pangolin_api?username=testuser1') get request if needed
+        .then((response) => response.json())
+        .then((data) => console.log(data));*/
     });
 
 });
