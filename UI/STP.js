@@ -27,7 +27,7 @@ addEventListener('load', (event) => {
                 'username': document.querySelector("#username").value,
                 'conditionFound': document.querySelector("#conditionFound").value,
                 'notes': document.querySelector("#notes").value,
-                'locationOfSighting': document.querySelector("#locationOfSighting").value
+                'locationOfSighting': document.querySelector("#locationOfSighting").value //remember to send name of file eventually to use in the path
             })
         })
         .then((response) => response.json())
