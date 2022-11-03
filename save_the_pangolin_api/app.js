@@ -39,7 +39,7 @@ async function getSighting(req) { //establishing valid request and giving approp
         const username = req.query.username;
         if(username && username.length > 0 
         && username.length <= 32 && username.match(/^[a-z0-9]+$/i)){
-            const sql = 'SELECT `conditionFound`, `notes`, `locationOfSighting`, `imagePath` FROM `sightings` WHERE `username`=?';
+            const sql = 'SELECT `id`, `conditionFound`, `notes`, `locationOfSighting`, `imagePath` FROM `sightings` WHERE `username`=?';
             const rows = await db.query(sql, [username]);
 
             if(rows){
@@ -67,18 +67,19 @@ async function postSighting(req) { //establishing valid request and giving appro
         const conditionFound = req.body.conditionFound;
         const notes = req.body.notes;
         const locationOfSighting = req.body.locationOfSighting;
-        const imagePath = 'theImagePath';                           //CHANGE THIS LINE TO USE CORRECT IMAGE PATH
-        if(username && conditionFound && notes && locationOfSighting && imagePath
+        const imageName = req.body.imageName;                           //CHANGE THIS LINE TO USE CORRECT IMAGE PATH
+        if(username && conditionFound && notes && locationOfSighting && imageName
         && username.length > 0 && username.length <= 64
         && username.match(/^[a-z0-9]+$/i)
         && conditionFound.length > 0 && conditionFound.length <= 64
         && notes.length > 0 
         && locationOfSighting.length > 0 && locationOfSighting.length <= 64
-        && imagePath.length > 0 ){
+        && imageName.length > 0 
+        && imageName.includes('.jpg') || imageName.includes('.jpeg') || imageName.includes('.png')){
 
             const sql = 'INSERT INTO `sightings` (`username`, `conditionFound`, `notes`, `locationOfSighting`, `imagePath`) '
             + 'VALUES (?, ?, ?, ?, ?)';
-            const result = await db.query(sql, [username, conditionFound, notes, locationOfSighting, imagePath]);
+            const result = await db.query(sql, [username, conditionFound, notes, locationOfSighting, imageName]);
 
             if(result.affectedRows) {
                 status = 201;

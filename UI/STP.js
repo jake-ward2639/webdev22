@@ -18,6 +18,9 @@ addEventListener('load', (event) => {
 
     document.querySelector("#submitSighting").addEventListener("click", function(event){
 
+        const d = new Date();
+        const imageName = d.getTime() + '.' + document.querySelector("#imageToSubmit").files.item(0).name.split('.').pop();
+
         fetch('https://jw1448.brighton.domains/save_the_pangolin_api', { //fetch post request using form data
             method: 'POST',
             headers:{
@@ -27,7 +30,8 @@ addEventListener('load', (event) => {
                 'username': document.querySelector("#username").value,
                 'conditionFound': document.querySelector("#conditionFound").value,
                 'notes': document.querySelector("#notes").value,
-                'locationOfSighting': document.querySelector("#locationOfSighting").value //remember to send name of file eventually to use in the path
+                'locationOfSighting': document.querySelector("#locationOfSighting").value, //remember to send name of file eventually to use in the path
+                'imageName': imageName
             })
         })
         .then((response) => response.json())
