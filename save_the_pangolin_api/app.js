@@ -39,7 +39,7 @@ async function getSighting(req) { //establishing valid request and giving approp
         const username = req.query.username;
         if(username && username.length > 0 
         && username.length <= 32 && username.match(/^[a-z0-9]+$/i)){
-            const sql = 'SELECT `id`, `conditionFound`, `notes`, `locationOfSighting`, `imagePath` FROM `sightings` WHERE `username`=?';
+            const sql = 'SELECT `id`, `conditionFound`, `notes`, `locationOfSighting`, `imageName` FROM `sightings` WHERE `username`=?';
             const rows = await db.query(sql, [username]);
 
             if(rows){
@@ -67,7 +67,7 @@ async function postSighting(req) { //establishing valid request and giving appro
         const conditionFound = req.body.conditionFound;
         const notes = req.body.notes;
         const locationOfSighting = req.body.locationOfSighting;
-        const imageName = req.body.imageName;                           //CHANGE THIS LINE TO USE CORRECT IMAGE PATH
+        const imageName = req.body.imageName;
         if(username && conditionFound && notes && locationOfSighting && imageName
         && username.length > 0 && username.length <= 64
         && username.match(/^[a-z0-9]+$/i)
@@ -77,7 +77,7 @@ async function postSighting(req) { //establishing valid request and giving appro
         && imageName.length > 0 
         && imageName.includes('.jpg') || imageName.includes('.jpeg') || imageName.includes('.png')){
 
-            const sql = 'INSERT INTO `sightings` (`username`, `conditionFound`, `notes`, `locationOfSighting`, `imagePath`) '
+            const sql = 'INSERT INTO `sightings` (`username`, `conditionFound`, `notes`, `locationOfSighting`, `imageName`) '
             + 'VALUES (?, ?, ?, ?, ?)';
             const result = await db.query(sql, [username, conditionFound, notes, locationOfSighting, imageName]);
 
