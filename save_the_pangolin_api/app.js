@@ -37,6 +37,7 @@ async function getSighting(req) { //establishing valid request and giving approp
     let status = 500, data = null;
     try {
         const username = req.query.username;
+        const mostRecent = req.query.mostRecent;
         if(username && username.length > 0 
         && username.length <= 32 && username.match(/^[a-z0-9]+$/i)){
             const sql = 'SELECT `id`, `conditionFound`, `notes`, `locationOfSighting`, `imageName` FROM `sightings` WHERE `username`=?';
@@ -46,6 +47,18 @@ async function getSighting(req) { //establishing valid request and giving approp
                 status = 200;
                 data = {
                     'username': username,
+                    'sightings': rows
+                };
+            } else {
+                status = 204;
+            }
+        } else if(mostRecent && mostRecent.length > 0){
+            const sql = 'SELECT `id`, `username`, `conditionFound`, `notes`, `locationOfSighting`, `imageName` FROM `sightings` ORDER BY `id` DESC LIMIT ?';
+            const rows = await db.query(sql, [mostRecent]);
+
+            if(rows){
+                status = 200;
+                data = {
                     'sightings': rows
                 };
             } else {
