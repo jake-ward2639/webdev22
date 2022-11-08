@@ -1,7 +1,7 @@
 addEventListener('load', (event) => {
 
     showTopNav = () => {
-        var nav = document.querySelector("#topNav");
+        let nav = document.querySelector("#topNav");
         if (nav.className === "topnav") {
             nav.className += " responsive";
         } else {
@@ -77,10 +77,13 @@ addEventListener('load', (event) => {
     }
 
     uploadImage = (imageName) => {
-        var formdata = new FormData();
-        formdata.append("sightingImage", document.querySelector("#imageToSubmit").files[0]);
+        let blob = document.querySelector("#imageToSubmit").files[0];
+        let imageToSubmit = new File([blob], imageName, {type: blob.type});
 
-        var requestOptions = {
+        let formdata = new FormData();
+        formdata.append("sightingImage", imageToSubmit);
+
+        let requestOptions = {
             method: 'POST',
             body: formdata,
             redirect: 'follow'
