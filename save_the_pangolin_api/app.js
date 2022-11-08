@@ -1,10 +1,14 @@
 const express = require('express');
-const fileUpload = require('express-fileupload');
+const fileUpload = require('express-fileupload'); //allowing file handling
 const bodyParser = require('body-parser'); //allows urlencoded data to be parsed into the body of the request
 const cors = require('cors'); //prevents cors errors when contacting from client
 const db = require('./db'); //connection to database
 
 const app = express();
+app.use(fileUpload({ //enable file uploads
+    //can use limits: { fileSize: 50 * 1024 * 1024 }, to limit file size of submitted data but i dont want to exclude high quality images
+    createParentPath: true
+}));
 app.use(bodyParser.urlencoded({extended: false})); //can include app.use(bodyParser.json()); to utalize json as well
 app.use(cors());
 
@@ -108,5 +112,38 @@ async function postSighting(req) { //establishing valid request and giving appro
     return {status, data};
 }
    
+app.post('/save_the_pangolin_api/upload', async (req, res) => { //handling images uploaded
+    try {
+        let sightingImage = req.files.sightingImage[0]; //only use first image submitted
+        if(!req.files) {
+            res.send({
+                status: false,
+                message: 'No image submitted uploaded'
+            });
+        } else if(sightingImage.name.includes('.jpg') || sightingImage.name.includes('.jpeg') || sightingImage.name.includes('.png')){ 
+            //check the file has a valid image extention
+            
+            sightingImage.mv('./uploads/' + sightingImage.name); //move to uploads directory
+
+            res.send({
+                status: true,
+                message: 'Image has been uploaded',
+                data: {
+                    name: sightingImage.name,
+                    mimetype: sightingImage.mimetype,
+                    size: sightingImage.size
+                }
+            });
+
+        } else{
+            res.send({
+                status: false,
+                message: 'File submitted was not in the correct format'
+            });
+        }
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
 
 app.listen(port, () => {})
