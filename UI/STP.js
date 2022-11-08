@@ -16,13 +16,13 @@ addEventListener('load', (event) => {
         document.querySelector("#"+page_section+"_link").classList.add("active");
     }
     
-    function getSightingLocation() {
-        function success(position) {
+    getSightingLocation = () => {
+        success = (position) => {
             const geolocation  = position.coords.latitude + ' ' + position.coords.longitude;
             submitSighting(geolocation);
         }
         
-        function error(errorType) {
+        error = (errorType) => {
           switch(errorType.code) {
             case errorType.PERMISSION_DENIED:
               alert("You must ENABLE your location to submit a sighting")
@@ -49,6 +49,13 @@ addEventListener('load', (event) => {
     submitSighting = (locationOfSighting) => {
         const d = new Date();
         const imageName = d.getTime() + '.' + document.querySelector("#imageToSubmit").files.item(0).name.split('.').pop();
+        let conditionFound = "";
+        if(document.querySelector('#conditionFoundA').value == "alive"){
+            conditionFound = document.querySelector("#conditionFoundA").value + ': ' + document.querySelector("#conditionFoundB").value;
+        } else if(document.querySelector('#conditionFoundA').value == "dead"){
+            conditionFound = document.querySelector("#conditionFoundA").value + ': ' + document.querySelector("#conditionFoundC").value;
+        }
+        
 
         fetch('https://jw1448.brighton.domains/save_the_pangolin_api', { //fetch post request using form data
             method: 'POST',
@@ -57,7 +64,7 @@ addEventListener('load', (event) => {
             },    
             body: new URLSearchParams({
                 'username': document.querySelector("#username").value,
-                'conditionFound': document.querySelector("#conditionFound").value,
+                'conditionFound': conditionFound,
                 'notes': document.querySelector("#notes").value,
                 'locationOfSighting': locationOfSighting,
                 'imageName': imageName
@@ -72,8 +79,21 @@ addEventListener('load', (event) => {
         .then((data) => console.log(data));*/
     }
 
-    document.querySelector("#submitSighting").addEventListener("click", function(event){
+    document.querySelector("#submitSighting").addEventListener("click", (event) => {
         getSightingLocation();
+    });
+
+    document.querySelector('#conditionFoundA').addEventListener("change", (event) => {
+        if(document.querySelector('#conditionFoundA').value == "default") {
+            document.querySelector('#conditionFoundB').style.display = "none";
+            document.querySelector('#conditionFoundC').style.display = "none";
+        } else if(document.querySelector('#conditionFoundA').value == "alive"){
+            document.querySelector('#conditionFoundB').style.display = "inline-block";
+            document.querySelector('#conditionFoundC').style.display = "none";
+        } else if(document.querySelector('#conditionFoundA').value == "dead"){
+            document.querySelector('#conditionFoundB').style.display = "none";
+            document.querySelector('#conditionFoundC').style.display = "inline-block";
+        }
     });
 
 });

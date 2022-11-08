@@ -112,3 +112,7 @@ form {
   text-align:center;
   margin:1em;
 }
+
+#conditionFoundB, #conditionFoundC{
+  display: none;
+}

@@ -32,12 +32,26 @@
         <form action="https://jw1448.brighton.domains/save_the_pangolin_api" method="POST">
           <label for="username">username:</label>
           <input type="text" id="username" name="username"><br><br>
-          <label for="conditionFound">conditionFound:</label>
-          <input type="text" id="conditionFound" name="conditionFound"><br><br>
+          <label for="conditionFoundA">conditionFound:</label>
+          <select name="conditionFoundA" id="conditionFoundA">
+            <option value="default"></option>
+            <option value="alive">Alive</option>
+            <option value="dead">Dead</option>
+          </select>
+          <select name="conditionFoundB" id="conditionFoundB">
+            <option value="default"></option>
+            <option value="healthy">Healthy</option>
+            <option value="injured">Injured</option>
+          </select>
+          <select name="conditionFoundC" id="conditionFoundC">
+            <option value="default"></option>
+            <option value="causedOfDeathUnknown">Caused of Death Unknown</option>
+            <option value="deathByPreditor">Death by Preditor</option>
+            <option value="deathByVehicularCollision">Death by Vehicular Collision</option>
+            <option value="deathByElectricFence">Death by Electric Fence</option>
+          </select><br><br>
           <label for="notes">notes:</label>
           <input type="text" id="notes" name="notes"><br><br>
-          <label for="locationOfSighting">locationOfSighting:</label>
-          <input type="text" id="locationOfSighting" name="locationOfSighting"><br><br>
           <input type="file" id="imageToSubmit" name="image" />
           <button id="submitSighting" type="button">Submit</button>
         </form>
