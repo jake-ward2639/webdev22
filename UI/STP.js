@@ -74,6 +74,20 @@ addEventListener('load', (event) => {
         .then((data) => { console.log(data) })
         .catch(console.error);
 
+        var formdata = new FormData();
+        formdata.append("sightingImage", document.querySelector("#imageToSubmit").files[0]);
+
+        var requestOptions = {
+            method: 'POST',
+            body: formdata,
+            redirect: 'follow'
+        };
+
+        fetch("https://jw1448.brighton.domains/save_the_pangolin_api/upload", requestOptions)
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(console.error);
+        
         /*fetch('https://jw1448.brighton.domains/save_the_pangolin_api?username=testuser1') get request if needed
         .then((response) => response.json())
         .then((data) => console.log(data));*/

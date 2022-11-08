@@ -5,11 +5,10 @@ const cors = require('cors'); //prevents cors errors when contacting from client
 const db = require('./db'); //connection to database
 
 const app = express();
-app.use(fileUpload({ //enable file uploads
-    //can use limits: { fileSize: 50 * 1024 * 1024 }, to limit file size of submitted data but i dont want to exclude high quality images
+app.use(fileUpload({
     createParentPath: true
 }));
-app.use(bodyParser.urlencoded({extended: false})); //can include app.use(bodyParser.json()); to utalize json as well
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
 
 const port = 3000;
@@ -82,14 +81,16 @@ async function postSighting(req) { //establishing valid request and giving appro
     try {
         const username = req.body.username;
         const conditionFound = req.body.conditionFound;
-        const notes = req.body.notes;
+        let notes = req.body.notes;
         const locationOfSighting = req.body.locationOfSighting;
         const imageName = req.body.imageName;
-        if(username && conditionFound && notes && locationOfSighting && imageName
+        if (!notes){
+            notes = null;
+        }
+        if(username && conditionFound && locationOfSighting && imageName
         && username.length > 0 && username.length <= 64
         && username.match(/^[a-z0-9]+$/i)
         && conditionFound.length > 0 && conditionFound.length <= 64
-        && notes.length > 0 
         && locationOfSighting.length > 0 && locationOfSighting.length <= 64
         && imageName.length > 0 
         && (imageName.includes('.jpg') || imageName.includes('.jpeg') || imageName.includes('.png'))){
@@ -111,10 +112,10 @@ async function postSighting(req) { //establishing valid request and giving appro
     }
     return {status, data};
 }
-   
+
 app.post('/save_the_pangolin_api/upload', async (req, res) => { //handling images uploaded
     try {
-        let sightingImage = req.files.sightingImage[0]; //only use first image submitted
+        let sightingImage = req.files.sightingImage;
         if(!req.files) {
             res.send({
                 status: false,
@@ -135,7 +136,7 @@ app.post('/save_the_pangolin_api/upload', async (req, res) => { //handling image
                 }
             });
 
-        } else{
+        } else {
             res.send({
                 status: false,
                 message: 'File submitted was not in the correct format'
