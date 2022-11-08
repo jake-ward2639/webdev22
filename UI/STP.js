@@ -71,9 +71,12 @@ addEventListener('load', (event) => {
             })
         })
         .then((response) => response.json())
-        .then((data) => { console.log(data) })
+        .then((data) => { console.log(data); uploadImage(imageName); })
         .catch(console.error);
 
+    }
+
+    uploadImage = (imageName) => {
         var formdata = new FormData();
         formdata.append("sightingImage", document.querySelector("#imageToSubmit").files[0]);
 
@@ -88,9 +91,6 @@ addEventListener('load', (event) => {
         .then(data => console.log(data))
         .catch(console.error);
         
-        /*fetch('https://jw1448.brighton.domains/save_the_pangolin_api?username=testuser1') get request if needed
-        .then((response) => response.json())
-        .then((data) => console.log(data));*/
     }
 
     document.querySelector("#submitSighting").addEventListener("click", (event) => {
