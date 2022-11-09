@@ -10,10 +10,16 @@ addEventListener('load', (event) => {
     }
 
     changeContent = (page_section) => {
-        document.querySelector("#"+document.querySelector(".active").id.replace('_link','')+"_section").style.display = "none";
-        document.querySelector(".active").classList.remove("active");
+        try{
+            document.querySelector("#"+document.querySelector(".active").id.replace('_link','')+"_section").style.display = "none";
+            document.querySelector(".active").classList.remove("active");
+        } catch{
+            document.querySelector("#Thanks_section").style.display = "none";
+        }
         document.querySelector("#"+page_section+"_section").style.display = "Block";
-        document.querySelector("#"+page_section+"_link").classList.add("active");
+        try{
+            document.querySelector("#"+page_section+"_link").classList.add("active");
+        }catch{}
     }
     
     getSightingLocation = () => {
@@ -96,7 +102,13 @@ addEventListener('load', (event) => {
 
         fetch("https://jw1448.brighton.domains/save_the_pangolin_api/upload", requestOptions)
         .then(response => response.text())
-        .then(data => console.log(data))
+        .then((data) => { 
+            console.log(data); 
+            let jsonData = JSON.parse(data);
+            if (JSON.stringify(jsonData).includes("\"status\":true")){
+                changeContent('Thanks');
+            }
+        })
         .catch(console.error);
         
     }

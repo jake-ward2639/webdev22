@@ -116,3 +116,11 @@ form {
 #conditionFoundB, #conditionFoundC{
   display: none;
 }
+
+#Upload_section, #Thanks_section{
+  display: none
+}
+
+#Thanks_section{
+  text-align: center;
+}
