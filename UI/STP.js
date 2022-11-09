@@ -71,7 +71,12 @@ addEventListener('load', (event) => {
             })
         })
         .then((response) => response.json())
-        .then((data) => { console.log(data); uploadImage(imageName); })
+        .then((data) => { 
+            console.log(data); 
+            if (data.hasOwnProperty('id')) {
+                uploadImage(imageName); 
+            }
+        })
         .catch(console.error);
 
     }
