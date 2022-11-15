@@ -21,6 +21,19 @@ addEventListener('load', (event) => {
             document.querySelector("#"+page_section+"_link").classList.add("active");
         }catch{}
     }
+
+    showCFBox = () => {
+        if(document.querySelector('#conditionFoundA').value == "default") {
+            document.querySelector('#conditionFoundB').style.display = "none";
+            document.querySelector('#conditionFoundC').style.display = "none";
+        } else if(document.querySelector('#conditionFoundA').value == "alive"){
+            document.querySelector('#conditionFoundB').style.display = "inline-block";
+            document.querySelector('#conditionFoundC').style.display = "none";
+        } else if(document.querySelector('#conditionFoundA').value == "dead"){
+            document.querySelector('#conditionFoundB').style.display = "none";
+            document.querySelector('#conditionFoundC').style.display = "inline-block";
+        }
+    }
     
     getSightingLocation = () => {
         success = (position) => {
@@ -113,21 +126,37 @@ addEventListener('load', (event) => {
         
     }
 
+    const json = localStorage.getItem('formState');
+    if(json) {
+        const formState = JSON.parse(json);
+        changeContent(formState.activePage);
+        document.querySelector("#username").value = formState.username;
+        document.querySelector('#conditionFoundA').value = formState.conditionFoundA;
+        document.querySelector("#conditionFoundB").value = formState.conditionFoundB;
+        document.querySelector("#conditionFoundC").value = formState.conditionFoundC;
+        document.querySelector("#notes").value = formState.notes;
+    }
+
+    showCFBox();
+
     document.querySelector("#submitSighting").addEventListener("click", (event) => {
         getSightingLocation();
     });
 
     document.querySelector('#conditionFoundA').addEventListener("change", (event) => {
-        if(document.querySelector('#conditionFoundA').value == "default") {
-            document.querySelector('#conditionFoundB').style.display = "none";
-            document.querySelector('#conditionFoundC').style.display = "none";
-        } else if(document.querySelector('#conditionFoundA').value == "alive"){
-            document.querySelector('#conditionFoundB').style.display = "inline-block";
-            document.querySelector('#conditionFoundC').style.display = "none";
-        } else if(document.querySelector('#conditionFoundA').value == "dead"){
-            document.querySelector('#conditionFoundB').style.display = "none";
-            document.querySelector('#conditionFoundC').style.display = "inline-block";
-        }
+        showCFBox();
     });
+    
+    window.onpagehide = () => {
+        const json = JSON.stringify({
+            "activePage" : document.querySelector(".active").id.replace('_link',''),
+            "username" : document.querySelector("#username").value,
+            "conditionFoundA" : document.querySelector('#conditionFoundA').value,
+            "conditionFoundB" : document.querySelector('#conditionFoundB').value,
+            "conditionFoundC" : document.querySelector('#conditionFoundC').value,
+            "notes" : document.querySelector('#notes').value
+        });
+        localStorage.setItem('formState', json);
+    };
 
 });
