@@ -126,6 +126,8 @@ addEventListener('load', (event) => {
         
     }
 
+    navigator.serviceWorker.register('./sw.js', {'scope': './'});
+
     const json = localStorage.getItem('formState');
     if(json) {
         const formState = JSON.parse(json);
