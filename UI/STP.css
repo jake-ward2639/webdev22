@@ -17,6 +17,10 @@ h2 {
   display:inline-block;
 }
 
+img{
+  width: 100%;
+}
+
 .row {
   display: -webkit-flex;
   display: flex;
@@ -121,6 +125,10 @@ form {
   display: none
 }
 
-#Thanks_section{
+#Thanks_section, #report_error{
   text-align: center;
+}
+
+#report_error{
+  color: red;
 }

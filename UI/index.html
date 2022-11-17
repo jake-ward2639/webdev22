@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="./manifest.json">
     <link rel="stylesheet" href="./STP.css">
+    <link rel="icon" type="image/x-icon" href="assets/stp_icon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="STP.js"></script>
     <title>Save the Pangolin</title>
@@ -16,10 +17,10 @@
   </div>
 
   <div class="topnav" id="topNav">
-      <a id="Home_link" href="#home" onclick="changeContent(`Home`)" class="active">Home</a>
-      <a id="Upload_link" href="#upload" onclick="changeContent(`Upload`)">Upload</a>
-      <a id="Contact_link" href="#contact" onclick="changeContent('Contact')">Contact</a>
-      <a id="About_link" href="#about" onclick="changeContent('About')">About</a>
+      <a id="Home_link" onclick="changeContent(`Home`)" class="active">Home</a>
+      <a id="Upload_link" onclick="changeContent(`Upload`)">Upload</a>
+      <a id="Contact_link" onclick="changeContent('Contact')">Contact</a>
+      <a id="About_link" onclick="changeContent('About')">About</a>
       <a href="javascript:void(0);" class="icon" onclick="showTopNav()">
         <i class="fa fa-bars"></i>
       </a>
@@ -30,6 +31,8 @@
   <div class="column middle" style="background-color:#ccc;">
 
     <div id="Upload_section">
+      <p id="report_error"></p>
+
       <form action="https://jw1448.brighton.domains/save_the_pangolin_api" method="POST">
         <label for="username">Name:</label>
         <input type="text" id="username" name="username"><br><br>

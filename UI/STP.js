@@ -1,6 +1,6 @@
 addEventListener('load', (event) => {
 
-    showTopNav = () => {
+    showTopNav = () => { //open nav
         let nav = document.querySelector("#topNav");
         if (nav.className === "topnav") {
             nav.className += " responsive";
@@ -9,7 +9,7 @@ addEventListener('load', (event) => {
         }
     }
 
-    changeContent = (page_section) => {
+    changeContent = (page_section) => { //remove the active class and hide content of previous page while showing and adding active class to new page
         try{
             document.querySelector("#"+document.querySelector(".active").id.replace('_link','')+"_section").style.display = "none";
             document.querySelector(".active").classList.remove("active");
@@ -22,7 +22,11 @@ addEventListener('load', (event) => {
         }catch{}
     }
 
-    showCFBox = () => {
+    reportError = (errorMessage) => { //report any kind of error message on screen
+        document.querySelector('#report_error').textContent = errorMessage;
+    }
+
+    showCFBox = () => { //display the correct condition found element in the form
         if(document.querySelector('#conditionFoundA').value == "default") {
             document.querySelector('#conditionFoundB').style.display = "none";
             document.querySelector('#conditionFoundC').style.display = "none";
@@ -35,13 +39,13 @@ addEventListener('load', (event) => {
         }
     }
     
-    getSightingLocation = () => {
+    getSightingLocation = () => { //get the longitude and latitude before sending all data
         success = (position) => {
             const geolocation  = position.coords.latitude + ' ' + position.coords.longitude;
             submitSighting(geolocation);
         }
         
-        error = (errorType) => {
+        error = (errorType) => { //report errors if required
           switch(errorType.code) {
             case errorType.PERMISSION_DENIED:
               alert("You must ENABLE your location to submit a sighting")
@@ -65,13 +69,13 @@ addEventListener('load', (event) => {
         }
     }
     
-    submitSighting = (locationOfSighting) => {
+    submitSighting = (locationOfSighting) => { //send information to API
         const d = new Date();
         const imageName = d.getTime() + '.' + document.querySelector("#imageToSubmit").files.item(0).name.split('.').pop();
         let conditionFound = "";
-        if(document.querySelector('#conditionFoundA').value == "alive"){
+        if(document.querySelector('#conditionFoundA').value == "alive" && document.querySelector("#conditionFoundB").value != 'default'){
             conditionFound = document.querySelector("#conditionFoundA").value + ': ' + document.querySelector("#conditionFoundB").value;
-        } else if(document.querySelector('#conditionFoundA').value == "dead"){
+        } else if(document.querySelector('#conditionFoundA').value == "dead" && document.querySelector("#conditionFoundC").value != 'default'){
             conditionFound = document.querySelector("#conditionFoundA").value + ': ' + document.querySelector("#conditionFoundC").value;
         }
         
@@ -89,18 +93,28 @@ addEventListener('load', (event) => {
                 'imageName': imageName
             })
         })
-        .then((response) => response.json())
+        .then((response) => {
+            if(response.status = '400'){
+                reportError(' Please make sure all mandatory fields are filled in and you are submitting an jpg or png file');
+            } else if (response.status = '500'){
+                reportError(' There was a server error, please try again later');
+            } else {
+            response.json();
+            }
+        })
         .then((data) => { 
             console.log(data); 
             if (data.hasOwnProperty('id')) {
                 uploadImage(imageName); 
             }
         })
-        .catch(console.error);
+        .catch((error) => {
+            console.error;    
+        });
 
     }
 
-    uploadImage = (imageName) => {
+    uploadImage = (imageName) => { //upload file
         let blob = document.querySelector("#imageToSubmit").files[0];
         let imageToSubmit = new File([blob], imageName, {type: blob.type});
 
@@ -142,7 +156,13 @@ addEventListener('load', (event) => {
     showCFBox();
 
     document.querySelector("#submitSighting").addEventListener("click", (event) => {
-        getSightingLocation();
+        if(document.querySelector("#imageToSubmit").files.length == 0 ){
+            reportError('Select a file to submit');
+        } else if(navigator.onLine){
+            getSightingLocation();
+        } else {
+            reportError('You do not have an internet connection, submit again once you have one');
+        }
     });
 
     document.querySelector('#conditionFoundA').addEventListener("change", (event) => {
