@@ -153,6 +153,8 @@ addEventListener('load', (event) => {
         document.querySelector("#notes").value = formState.notes;
     }
 
+    changeContent('Upload');
+
     showCFBox();
 
     document.querySelector("#submitSighting").addEventListener("click", (event) => {
