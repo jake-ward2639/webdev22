@@ -132,3 +132,7 @@ form {
 #report_error{
   color: red;
 }
+
+#map { 
+  height: 400px; 
+}

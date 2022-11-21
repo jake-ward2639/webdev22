@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="./STP.css">
     <link rel="icon" type="image/x-icon" href="assets/stp_icon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
     <script src="STP.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <title>Save the Pangolin</title>
 </head>
 <body>
@@ -53,6 +55,7 @@
           <option value="deathByVehicularCollision">Death by Vehicular Collision</option>
           <option value="deathByElectricFence">Death by Electric Fence</option>
         </select><br><br>
+        <a>Drag and Drop the Marker on the Map to Choose the Location</a><br><br>
         <label for="notes">Additional Notes:</label>
         <input type="text" id="notes" name="notes"><br><br>
         <input type="file" id="imageToSubmit" name="image">
@@ -77,10 +80,8 @@
     </div>
 
     <div class="footer">
-    <p>Footer</p>
+      <div id="map"></div>
     </div>
 
 </body>
 </html>
-
-

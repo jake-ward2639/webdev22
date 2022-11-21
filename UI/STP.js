@@ -1,4 +1,6 @@
 addEventListener('load', (event) => {
+    
+    let locationOfSighting;
 
     showTopNav = () => { //open nav
         let nav = document.querySelector("#topNav");
@@ -39,10 +41,12 @@ addEventListener('load', (event) => {
         }
     }
     
-    getSightingLocation = () => { //get the longitude and latitude before sending all data
+    getLocation = () => {
         success = (position) => {
-            const geolocation  = position.coords.latitude + ' ' + position.coords.longitude;
-            submitSighting(geolocation);
+            let latitude  = position.coords.latitude;
+            let longitude  = position.coords.longitude;
+            loadMap(latitude, longitude);
+            locationOfSighting = latitude + " " + longitude;
         }
         
         error = (errorType) => { //report errors if required
@@ -69,7 +73,25 @@ addEventListener('load', (event) => {
         }
     }
     
-    submitSighting = (locationOfSighting) => { //send information to API
+    loadMap = (latitude, longitude) => {
+        let map = L.map('map').setView([latitude, longitude], 13);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+        let marker = L.marker([latitude, longitude]).addTo(map);
+        marker.dragging.enable();
+        marker.bindPopup("<b>Location of Sighting<br><br>"+latitude+" "+longitude).openPopup();
+        
+        marker.on('dragend', (e) => {
+            let newLatLng = marker.getLatLng();
+            marker.setPopupContent("<b>Location of Sighting<br><br>"+newLatLng.lat+" "+newLatLng.lng);
+            locationOfSighting = newLatLng.lat.toString() + " " + newLatLng.lng.toString();
+        });
+    }
+    
+    
+    submitSighting = () => { //send information to API
         const d = new Date();
         const imageName = d.getTime() + '.' + document.querySelector("#imageToSubmit").files.item(0).name.split('.').pop();
         let conditionFound = "";
@@ -98,9 +120,8 @@ addEventListener('load', (event) => {
                 reportError(' Please make sure all mandatory fields are filled in and you are submitting an jpg or png file');
             } else if (response.status = '500'){
                 reportError(' There was a server error, please try again later');
-            } else {
-            response.json();
             }
+            return response.json();
         })
         .then((data) => { 
             console.log(data); 
@@ -156,12 +177,13 @@ addEventListener('load', (event) => {
     }
     
     showCFBox();
-
+    getLocation();
+    
     document.querySelector("#submitSighting").addEventListener("click", (event) => {
         if(document.querySelector("#imageToSubmit").files.length == 0 ){
             reportError('Select a file to submit');
         } else if(navigator.onLine){
-            getSightingLocation();
+            submitSighting();
         } else {
             reportError('You do not have an internet connection, submit again once you have one');
         }
