@@ -151,10 +151,10 @@ addEventListener('load', (event) => {
         document.querySelector("#conditionFoundB").value = formState.conditionFoundB;
         document.querySelector("#conditionFoundC").value = formState.conditionFoundC;
         document.querySelector("#notes").value = formState.notes;
+    }else{
+        changeContent('Upload');
     }
-
-    changeContent('Upload');
-
+    
     showCFBox();
 
     document.querySelector("#submitSighting").addEventListener("click", (event) => {
