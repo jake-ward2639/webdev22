@@ -120,6 +120,14 @@ form {
   margin:1em;
 }
 
+textarea {
+    resize: none;
+    width: -webkit-fill-available;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 80px;
+}
+
 #conditionFoundB, #conditionFoundC{
   display: none;
 }
