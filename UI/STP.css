@@ -18,7 +18,10 @@ h2 {
 }
 
 img{
-  width: 100%;
+  width: 60%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .row {
@@ -125,7 +128,7 @@ form {
   display: none
 }
 
-#Thanks_section, #report_error{
+#Thanks_section, #About_section, #Contact_section, #report_error{
   text-align: center;
 }
 
