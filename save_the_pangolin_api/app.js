@@ -3,6 +3,7 @@ const fileUpload = require('express-fileupload'); //allowing file handling
 const bodyParser = require('body-parser'); //allows urlencoded data to be parsed into the body of the request
 const cors = require('cors'); //prevents cors errors when contacting from client
 const db = require('./db'); //connection to database
+const fs = require("fs"); //move files
 
 const app = express();
 app.use(fileUpload({
@@ -112,6 +113,11 @@ async function postSighting(req) { //establishing valid request and giving appro
     }
     return {status, data};
 }
+
+app.get('/save_the_pangolin_api/download', async (req, res) => {
+    const img = __dirname + "/uploads/" + req.query.imageName;
+    res.sendFile(img);
+});
 
 app.post('/save_the_pangolin_api/upload', async (req, res) => { //handling images uploaded
     try {
