@@ -132,11 +132,11 @@ textarea {
   display: none;
 }
 
-#Upload_section, #Thanks_section, #About_section, #Contact_section{
+#Upload_section, #Thanks_section, #About_section, #Contact_section, #Examples_section{
   display: none
 }
 
-#Thanks_section, #About_section, #Contact_section, #report_error{
+#Thanks_section, #About_section, #Contact_section, #report_error, #Examples_section{
   text-align: center;
 }
 

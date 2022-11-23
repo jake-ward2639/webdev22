@@ -179,6 +179,62 @@ addEventListener('load', (event) => {
     showCFBox();
     getLocation();
     
+    const Examples_section = document.querySelector('#Examples_section'); //populate examples
+    let requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };
+    fetch("https://jw1448.brighton.domains/save_the_pangolin_api?mostRecent=5", requestOptions)
+        .then(response => response.json())
+        .then((result) => {
+            for (const sightings of result.sightings) {
+
+                let requestOptions = {
+                  method: 'GET',
+                  redirect: 'follow'
+                };
+                fetch("https://jw1448.brighton.domains/save_the_pangolin_api/download?imageName="+sightings.imageName, requestOptions)
+                    .then(response => response.blob())
+                    .then((imageBlob) => {
+                        
+                        const urlCreator = window.URL || window.webkitURL;
+                        let image = document.createElement('img');
+                        image.src  = urlCreator.createObjectURL(imageBlob);
+                        Examples_section.appendChild(image);
+                        
+                        let para = document.createElement("p");
+                        let node = document.createTextNode("Submitted by " + sightings.username);
+                        para.appendChild(node);
+                        Examples_section.appendChild(para);
+                        
+                        para = document.createElement("p");
+                        node = document.createTextNode("The condition found was " + sightings.conditionFound);
+                        para.appendChild(node);
+                        Examples_section.appendChild(para);
+                        
+                        if(sightings.notes){
+                            para = document.createElement("p");
+                            node = document.createTextNode("Additional notes:");
+                            para.appendChild(node);
+                            Examples_section.appendChild(para);
+                            para = document.createElement("p");
+                            node = document.createTextNode(sightings.notes);
+                            para.appendChild(node);
+                            Examples_section.appendChild(para);
+                        }
+                        
+                        para = document.createElement("p");
+                        node = document.createTextNode("The location of the sighting was " + sightings.locationOfSighting);
+                        para.appendChild(node);
+                        Examples_section.appendChild(para);
+                        Examples_section.appendChild(document.createElement("br"));
+                    })
+                    .catch(error => console.log('error', error));
+                
+            }
+        })
+        .catch(error => console.log('error', error));
+    
     document.querySelector("#submitSighting").addEventListener("click", (event) => {
         if(document.querySelector("#imageToSubmit").files.length == 0 ){
             reportError('Select a file to submit');
