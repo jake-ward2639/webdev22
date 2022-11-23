@@ -90,11 +90,10 @@ async function postSighting(req) { //establishing valid request and giving appro
         }
         if(username && conditionFound && locationOfSighting && imageName
         && username.length > 0 && username.length <= 64
-        && username.match(/^[a-z0-9]+$/i)
         && conditionFound.length > 0 && conditionFound.length <= 64
         && locationOfSighting.length > 0 && locationOfSighting.length <= 64
         && imageName.length > 0 
-        && (imageName.includes('.jpg') || imageName.includes('.jpeg') || imageName.includes('.png'))){ //only accept image files
+        && (imageName.includes('.jpg') || imageName.includes('.jpeg') || imageName.includes('.png'))){
 
             const sql = 'INSERT INTO `sightings` (`username`, `conditionFound`, `notes`, `locationOfSighting`, `imageName`) '
             + 'VALUES (?, ?, ?, ?, ?)';
