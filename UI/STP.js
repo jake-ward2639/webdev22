@@ -208,7 +208,7 @@ addEventListener('load', (event) => {
                         Examples_section.appendChild(para);
                         
                         para = document.createElement("p");
-                        node = document.createTextNode("The condition found was " + sightings.conditionFound);
+                        node = document.createTextNode("The pangolin was found " + sightings.conditionFound.replace(/([A-Z])/g, ' $1').trim().toLowerCase());
                         para.appendChild(node);
                         Examples_section.appendChild(para);
                         
