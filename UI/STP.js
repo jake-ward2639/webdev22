@@ -182,6 +182,15 @@ addEventListener('load', (event) => {
                     })
                 })
                 .then((response) => {
+                    if(response.status != '201'){
+                        localStorage.removeItem(requestsArray[0]);
+                        requestsArray.shift();
+                        localStorage.setItem('requests', JSON.stringify(requestsArray));
+                    }
+                    return response.json();
+                })
+                .then((data) => { 
+                    console.log(data); 
                     let image = new Image();
                     image.src = currentRequest.image;
                     let formdata = new FormData();
@@ -213,10 +222,6 @@ addEventListener('load', (event) => {
                         requestsArray.shift();
                         localStorage.setItem('requests', JSON.stringify(requestsArray));
                     });
-                    return response.json();
-                })
-                .then((data) => { 
-                    console.log(data); 
                 })
                 .catch((error) => {
                     console.error;    
