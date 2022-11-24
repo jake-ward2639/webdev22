@@ -160,6 +160,18 @@ addEventListener('load', (event) => {
         .catch(console.error);
         
     }
+    
+    checkOfflineRequests = () => {
+        if(navigator.onLine){
+            const requests = localStorage.getItem('requests');
+            const requestsArray = JSON.parse(requests);
+            if(requestsArray.length > 0){
+                localStorage.removeItem(requestsArray[0]);
+                requestsArray.shift();
+                localStorage.setItem('requests', JSON.stringify(requestsArray));
+            }
+        }
+    }
 
     navigator.serviceWorker.register('./sw.js', {'scope': './'});
 
@@ -175,6 +187,9 @@ addEventListener('load', (event) => {
     }else{
         changeContent('Upload');
     }
+    
+    const requests = localStorage.getItem('requests');
+    if(!requests) { localStorage.setItem("requests", "[]"); }
     
     showCFBox();
     getLocation();
@@ -241,7 +256,29 @@ addEventListener('load', (event) => {
         } else if(navigator.onLine){
             submitSighting();
         } else {
-            reportError('You do not have an internet connection, submit again once you have one');
+            const requests = localStorage.getItem('requests');
+            const requestsArray = JSON.parse(requests);
+            const d = new Date();
+            let requestName = "request"+d.getTime();
+            requestsArray.push(requestName);
+            localStorage.setItem('requests', JSON.stringify(requestsArray));
+            
+            
+            const imageName = d.getTime() + '.' + document.querySelector("#imageToSubmit").files.item(0).name.split('.').pop();
+            let conditionFound = "";
+            if(document.querySelector('#conditionFoundA').value == "alive" && document.querySelector("#conditionFoundB").value != 'default'){
+                conditionFound = document.querySelector("#conditionFoundA").value + ': ' + document.querySelector("#conditionFoundB").value;
+            } else if(document.querySelector('#conditionFoundA').value == "dead" && document.querySelector("#conditionFoundC").value != 'default'){
+                conditionFound = document.querySelector("#conditionFoundA").value + ': ' + document.querySelector("#conditionFoundC").value;
+            }
+            const json = JSON.stringify({
+                'username': document.querySelector("#username").value,
+                'conditionFound': conditionFound,
+                'notes': document.querySelector("#notes").value,
+                'locationOfSighting': locationOfSighting,
+                'imageName': imageName
+            });
+            localStorage.setItem(requestName, json);
         }
     });
 
@@ -261,4 +298,5 @@ addEventListener('load', (event) => {
         localStorage.setItem('formState', json);
     };
 
+    setInterval(checkOfflineRequests, 5000);
 });
