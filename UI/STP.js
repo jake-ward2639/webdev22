@@ -166,9 +166,61 @@ addEventListener('load', (event) => {
             const requests = localStorage.getItem('requests');
             const requestsArray = JSON.parse(requests);
             if(requestsArray.length > 0){
-                localStorage.removeItem(requestsArray[0]);
-                requestsArray.shift();
-                localStorage.setItem('requests', JSON.stringify(requestsArray));
+                const currentRequest = JSON.parse(localStorage.getItem(requestsArray[0]));
+                
+                fetch('https://jw1448.brighton.domains/save_the_pangolin_api', {
+                    method: 'POST',
+                    headers:{
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                    },    
+                    body: new URLSearchParams({
+                        'username': currentRequest.username,
+                        'conditionFound': currentRequest.conditionFound,
+                        'notes': currentRequest.notes,
+                        'locationOfSighting': currentRequest.locationOfSighting,
+                        'imageName': currentRequest.imageName
+                    })
+                })
+                .then((response) => {
+                    let image = new Image();
+                    image.src = currentRequest.image;
+                    let formdata = new FormData();
+                    
+                    function urltoFile(url, filename, mimeType){
+                        return (fetch(url)
+                            .then(function(res){return res.arrayBuffer();})
+                            .then(function(buf){return new File([buf], filename,{type:mimeType});})
+                        );
+                    }
+                    
+                    urltoFile(image.src, currentRequest.imageName, image.type)
+                    .then(function(file){ 
+                        formdata.append("sightingImage", file);
+                        
+                        let requestOptions = {
+                            method: 'POST',
+                            body: formdata,
+                            redirect: 'follow'
+                        };
+                        fetch("https://jw1448.brighton.domains/save_the_pangolin_api/upload", requestOptions)
+                        .then(response => response.text())
+                        .then((data) => { 
+                            console.log(data); 
+                        })
+                        .catch(console.error);
+                        
+                        localStorage.removeItem(requestsArray[0]);
+                        requestsArray.shift();
+                        localStorage.setItem('requests', JSON.stringify(requestsArray));
+                    });
+                    return response.json();
+                })
+                .then((data) => { 
+                    console.log(data); 
+                })
+                .catch((error) => {
+                    console.error;    
+                });
             }
         }
     }
@@ -271,14 +323,23 @@ addEventListener('load', (event) => {
             } else if(document.querySelector('#conditionFoundA').value == "dead" && document.querySelector("#conditionFoundC").value != 'default'){
                 conditionFound = document.querySelector("#conditionFoundA").value + ': ' + document.querySelector("#conditionFoundC").value;
             }
-            const json = JSON.stringify({
-                'username': document.querySelector("#username").value,
-                'conditionFound': conditionFound,
-                'notes': document.querySelector("#notes").value,
-                'locationOfSighting': locationOfSighting,
-                'imageName': imageName
-            });
-            localStorage.setItem(requestName, json);
+            
+            let base64Imagefile = "";
+            const file = document.querySelector("#imageToSubmit")['files'][0];
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                base64Imagefile = reader.result;
+                const json = JSON.stringify({
+                    'username': document.querySelector("#username").value,
+                    'conditionFound': conditionFound,
+                    'notes': document.querySelector("#notes").value,
+                    'locationOfSighting': locationOfSighting,
+                    'imageName': imageName,
+                    'image': base64Imagefile
+                });
+                localStorage.setItem(requestName, json);
+            };
+            reader.readAsDataURL(file);
         }
     });
 
