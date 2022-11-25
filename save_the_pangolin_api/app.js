@@ -122,7 +122,7 @@ app.post('/save_the_pangolin_api/upload', async (req, res) => { //handling image
     try {
         let sightingImage = req.files.sightingImage;
         if(!req.files) {
-            res.send({
+            res.status(400).send({
                 status: false,
                 message: 'No image submitted uploaded'
             });
@@ -131,7 +131,7 @@ app.post('/save_the_pangolin_api/upload', async (req, res) => { //handling image
             
             sightingImage.mv('./uploads/' + sightingImage.name); //move to uploads directory
 
-            res.send({
+            res.status(201).send({
                 status: true,
                 message: 'Image has been uploaded',
                 data: {
@@ -142,7 +142,7 @@ app.post('/save_the_pangolin_api/upload', async (req, res) => { //handling image
             });
 
         } else {
-            res.send({
+            res.status(400).send({
                 status: false,
                 message: 'File submitted was not in the correct format'
             });
