@@ -43,7 +43,7 @@ async function getSighting(req) { //establishing valid request and giving approp
         const username = req.query.username;
         const mostRecent = req.query.mostRecent;
         if(username && username.length > 0 
-        && username.length <= 32 && username.match(/^[a-z0-9]+$/i)){
+        && username.length <= 32){
             const sql = 'SELECT `id`, `conditionFound`, `notes`, `locationOfSighting`, `imageName` FROM `sightings` WHERE `username`=?';
             const rows = await db.query(sql, [username]);
 
