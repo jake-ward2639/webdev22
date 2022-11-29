@@ -102,6 +102,26 @@ img{
   .column.side {
     display: none;
   }
+
+  .header {
+    font-size: initial;
+    padding: 0%;
+  }
+
+  #notes {
+    margin-left: 0%;
+    margin-right: 0%;
+  }
+
+  #imageToSubmit { 
+    font-size: 0.9em;
+  }
+
+  #submitSighting {
+    height: 60px;
+    width: 100%;
+    font-size: larger;
+  }
 }
 
 h2:hover {
