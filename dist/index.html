@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="stylesheet" href="css/bundle.css">
+    <link rel="icon" type="image/x-icon" href="assets/stp_icon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
+    <script src="js/bundle.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <title>Save the Pangolin</title>
+</head>
+<body>
+
+  <div class="header">
+    <h2>Save the Pangolin</h2>
+  </div>
+
+  <div class="topnav" id="topNav">
+      <a id="Upload_link" onclick="changeContent(`Upload`)" class="active">Upload</a>
+      <a id="Contact_link" onclick="changeContent('Contact')">Contact</a>
+      <a id="About_link" onclick="changeContent('About')">About</a>
+      <a id="Examples_link" onclick="changeContent('Examples')">Examples</a>
+      <a href="javascript:void(0);" class="icon" onclick="showTopNav()">
+        <i class="fa fa-bars"></i>
+      </a>
+  </div>
+
+  <div class="row">
+  <div class="column side" style="background-color:#bbb;"></div>
+  <div class="column middle" style="background-color:#ccc;">
+
+    <div id="Upload_section">
+      <p id="report_error"></p>
+
+      <form action="https://jw1448.brighton.domains/save_the_pangolin_api" method="POST">
+        <label for="username">Name:</label>
+        <input type="text" id="username" name="username"><br><br>
+        <label for="conditionFoundA">Condition Found:</label>
+        <select name="conditionFoundA" id="conditionFoundA">
+          <option value="default">Not Selected</option>
+          <option value="alive">Alive</option>
+          <option value="dead">Dead</option>
+        </select>
+        <select name="conditionFoundB" id="conditionFoundB">
+          <option value="default">Not Selected</option>
+          <option value="healthy">Healthy</option>
+          <option value="injured">Injured</option>
+        </select>
+        <select name="conditionFoundC" id="conditionFoundC">
+          <option value="default">Not Selected</option>
+          <option value="causeOfDeathUnknown">Cause of Death Unknown</option>
+          <option value="deathByPreditor">Death by Preditor</option>
+          <option value="deathByVehicularCollision">Death by Vehicular Collision</option>
+          <option value="deathByElectricFence">Death by Electric Fence</option>
+        </select><br><br>
+        <a>Drag and Drop the Marker on the Map to Change the Location</a><br><br>
+        <label for="notes">Additional Notes:</label><br>
+        <textarea id="notes"></textarea><br><br>
+        <input type="file" id="imageToSubmit" name="image"><br><br>
+        <button id="submitSighting" type="button">Submit</button>
+      </form>
+    </div>
+
+    <div id="Contact_section">
+      <h3>Head of Research:</h3><p>example@gmail.com</p>
+      <h3>Research Team:</h3><p>example@gmail.com</p>
+      <h3>App Development Team:</h3><p>example@gmail.com</p>
+      <h3>Rescue Team:</h3><p>example@gmail.com<br>+44 7488810935</p>
+    </div>
+
+    <div id="About_section">
+      <h1>How to Use</h1><p>To submit a sighting you must submit a name and the condition the animal was found in, you may also add additional notes if you wish but this is not mandatory.<br><br>We automatically use your current location when submitting a sighting but please note that if you attempt to submit a sighting while offline, the results may be inaccurate as we will use your last known location. If you regain internet connection away from the sighting, you may adjust the submitted location by dragging and dropping the marker seen on our map.<br><br>Only one file can be chosen to be submitted and we only accept image files (e.g. jpg and png). On mobile you may chose an image from gallery or take a photo to submit.<br><br>After clicking the submit button your submission will be sent to our team for analysis. Thank you for your support.</p>
+      <h1>About Us</h1><img src="assets/example_pangolin.jpg" alt="example_pangolin"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dolor neque, sagittis vel semper non, sagittis ac lacus. Sed porta egestas nunc, vel tincidunt nibh cursus ac. Proin dui lacus, cursus consequat tincidunt et, maximus a nibh. Proin et neque a odio maximus porta sit amet a libero. Cras non dolor tortor. Vivamus lacinia diam et fringilla dignissim. Duis lorem magna, consequat eu ante et, interdum molestie urna. Nam cursus sed nibh eu dapibus. Curabitur dignissim ligula quis metus tincidunt condimentum. Suspendisse ut neque a leo ultricies porttitor quis quis ipsum.</p>
+    </div>
+    
+    <div id="Examples_section">
+        
+    </div>
+
+    <div id="Thanks_section">
+      <h1>Thank You!</h1><p>Your Assistance is Appreciated</p>
+    </div>
+    
+    </div>
+    <div class="column side" style="background-color:#bbb;"></div>
+    </div>
+
+    <div class="footer">
+      <div id="map"></div>
+    </div>
+
+</body>
+</html>
